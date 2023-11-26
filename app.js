@@ -1,6 +1,6 @@
 const os = require("os");
 const path = require("path");
-const fs = require("fs");
+const { writeFileSync } = require("fs");
 const readlineSync = require("readline-sync");
 
 //Function to print the same line
@@ -67,5 +67,29 @@ while (finished != 2) {
 }
 
 //saving data
-console.log("\nDacci un secondo mentre salviamo i dati inseriti...");
+console.log("\nDacci un secondo mentre salviamo i dati inseriti...\n");
 
+for (let i = 0; i < expensesName.length; i++) {
+  if (addOrNew == 2 && i == 0) {
+    writeFileSync(
+      filePath,
+      `Nome : ${expensesName[i]} \nPrezzo : ${expensesCost[i]}\n\n`
+    );
+  } else {
+    writeFileSync(
+      filePath,
+      `Nome : ${expensesName[i]} \nPrezzo : ${expensesCost[i]}\n\n`,
+      { flag: "a" }
+    );
+  }
+}
+
+let totalCost = 0;
+
+expensesCost.forEach((cost) => {
+  totalCost += Number(cost);
+});
+
+writeFileSync(filePath, `Costo Totale Mensile : ${totalCost}`, { flag: "a" });
+
+console.log("\nIl tuo file e pronto!");
